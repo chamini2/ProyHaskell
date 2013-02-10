@@ -1,4 +1,8 @@
+module Pokemon (Type, Stats, Evolution, Species, Monster, Move, MonsterMove) where
+--No importamos las funciones
 import Data.List
+import Data.List.Split
+--splitOn
 
 {- 
  - Definicion de Type, los posibles Tipos para un Monstruo o Ataque
@@ -108,12 +112,8 @@ moveTypeRelation x
 {-
  - Funcion que calcula el HP maximo actual para un Monstruo
  -}
-
--- el internet dice que se hace realmente -> (div ((hp . ev) x) 4)
 maxHP :: Monster -> Int
-maxHP x =  round $ (((hp . iv) x + 2 * (hp . base . species) x + (div ((hp . ev) x) 4) + 100) * (lvl x)) /. 100 + 10
-  where
-    x /. y = fromIntegral x / fromIntegral y
+maxHP x =  div (((hp . iv) x + 2 * (hp . base . species) x + (div ((hp . ev) x) 4) + 100) * (lvl x)) 100 + 10
 
 {- 
  - Funcion que calcula una estadistica actual para un Monstruo
@@ -125,10 +125,12 @@ stat x f = div (((f . iv) x + 2 * (f . base . species) x + div ((f . ev) x) 4) *
  - Funcion que calcula el dano de un Ataque
  -}
 damage :: Move -> Monster -> Monster -> Int
-damage move atk def = round $ fromIntegral ((div (2 * lvl atk + 10) {-/.-} 250) * (div (stat atk attack) {-/.-} (stat def defense)) * power move + 2) * modifier
+damage move atk def = round $ ((fI (2 * (lvl atk) + 10) / 250)                                    --La parte del nivel
+                               * (fI (stat atk (if physical move then attack else spAttack)) 
+                                 / fI (stat def (if physical move then defense else spDefense)))  --La parte de las estadisticas
+                               * fI (power move) + 2) * modifier                                  --Poder del ataque y modificador
   where
-    fI       = fromIntegral
-    x /. y   = fromIntegral x / fromIntegral y
+    fI = fromIntegral
     relation = moveTypeRelation . moveType $ move
     defType  = pokeType . species $ def
     modifier = (if elem (moveType move) $ (pokeType . species) atk then 1.5 else 1) -- STAB
@@ -136,18 +138,20 @@ damage move atk def = round $ fromIntegral ((div (2 * lvl atk + 10) {-/.-} 250) 
              * (1 / fI (max 1 $ (2 * (length $ intersect ((\ (_,y,_) -> y) relation) defType))))
              * (if null $ intersect ((\ (_,_,z) -> z) relation) defType then 1 else 0)
 
-perfIV = Stats {hp = 31, attack = 31, defense = 31, spAttack = 31, spDefense = 31, speed = 31}
-perfEV = Stats {hp = 255, attack = 255, defense = 255, spAttack = 255, spDefense = 255, speed = 255}
+
+perfIV    = Stats {hp = 31, attack = 31, defense = 31, spAttack = 31, spDefense = 31, speed = 31}
+perfEV    = Stats {hp = 255, attack = 255, defense = 255, spAttack = 255, spDefense = 255, speed = 255}
 rockThrow = Move {moveName = "Rock Throw", moveType = Rock, physical = True, pp = 20, power = 50}
+absorb    = Move {moveName = "Abosobr", moveType = Grass, physical = False, pp = 20, power = 20}
 
-statK = Stats {hp = 60, attack = 115, defense = 105, spAttack = 65, spDefense = 70, speed = 80}
-specK = Species { base = statK, preEvolution = Just (140, "nivel X"), no = 141, pokeType = [Rock, Water], name = "Kabutops", evolutions = []}
+statK     = Stats {hp = 60, attack = 115, defense = 105, spAttack = 65, spDefense = 70, speed = 80}
+specK     = Species { base = statK, preEvolution = Just (140, "nivel X"), no = 141, pokeType = [Rock, Water], name = "Kabutops", evolutions = []}
 
-movesK = [(rockThrow, 15)]
-monstK = Monster {nickname = "KABI", species = specK, lvl = 60, presHP = 60, moves = movesK, iv = perfIV, ev = perfEV}
+movesK    = [(rockThrow, 15)]
+monstK    = Monster {nickname = "KABI", species = specK, lvl = 60, presHP = 60, moves = movesK, iv = perfIV, ev = perfEV}
 
-statC = Stats {hp = 78, attack = 84, defense = 78, spAttack = 109, spDefense = 85, speed = 100}
-specC = Species { base = statC, preEvolution = Just (5, "nivel 36"), no = 6, pokeType = [Flying, Fire], name = "Charizard", evolutions = []}
+statC     = Stats {hp = 78, attack = 84, defense = 78, spAttack = 109, spDefense = 85, speed = 100}
+specC     = Species { base = statC, preEvolution = Just (5, "nivel 36"), no = 6, pokeType = [Flying, Fire], name = "Charizard", evolutions = []}
 
-movesC = []
-monstC = Monster {nickname = "CHARI", species = specC, lvl = 70, presHP = 78, moves = movesC, iv = perfIV, ev perfEV }
+movesC    = []
+monstC    = Monster {nickname = "CHARI", species = specC, lvl = 70, presHP = 78, moves = movesC, iv = perfIV, ev = perfEV }
