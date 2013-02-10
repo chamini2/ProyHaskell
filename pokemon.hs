@@ -34,6 +34,13 @@ data Stats = Stats { hp        :: Int
                    , speed     :: Int
                    } deriving (Show)
 
+{-
+ - Tipo para definir lo relevante a una evolucion
+ -}
+type Evolution = (Int        --Indicador de numero en Pokedex
+                 ,String     --Criterio de evolucion
+                 )
+
 {- 
  - Definicion de Species, los datos relevantes para una Especie
  -}
@@ -41,8 +48,8 @@ data Species = Species { no           :: Int
                        , name         :: String
                        , pokeType     :: [Type]
                        , base         :: Stats
-                       , preEvolution :: Maybe Int
-                       , evolution    :: [Int]
+                       , preEvolution :: Maybe Evolution
+                       , evolutions   :: [Evolution]
                        } deriving (Show)
 
 {- 
@@ -111,27 +118,36 @@ maxHP x =  round $ (((hp . iv) x + 2 * (hp . base . species) x + (div ((hp . ev)
 {- 
  - Funcion que calcula una estadistica actual para un Monstruo
  -}
-statAttack :: Monster -> Int
-statAttack x = div (((attack . iv) x + 2 * (attack . base . species) x + div ((attack . ev) x) 4) * (lvl x)) 100 + 5
-
-{- 
- - Funcion que calcula una estadistica actual para un Monstruo
- -}
-statDefense :: Monster -> Int
-statDefense x = div (((defense . iv) x + 2 * (defense . base . species) x + div ((defense . ev) x) 4) * (lvl x)) 100 + 5
+stat :: Monster -> (Stats -> Int) -> Int
+stat x f = div (((f . iv) x + 2 * (f . base . species) x + div ((f . ev) x) 4) * (lvl x)) 100 + 5
 
 {- 
  - Funcion que calcula el dano de un Ataque
  -}
 damage :: Move -> Monster -> Monster -> Int
-damage move atk def = round $ fromIntegral ((div (2 * lvl atk + 10) {-/.-} 250) * (div (statAttack atk) {-/.-} (statDefense def)) * power move + 2) * modifier
+damage move atk def = round $ fromIntegral ((div (2 * lvl atk + 10) {-/.-} 250) * (div (stat atk attack) {-/.-} (stat def defense)) * power move + 2) * modifier
   where
-    x /. y = fromIntegral x / fromIntegral y
-    modifier = (if elem (moveType move) ((pokeType . species) atk) then 1.5 else 1) -- STAB
-             * (fromIntegral ( max 1 ((length (filter (moveType move == ) (concat (map ((\(x,_,_) -> x) . moveTypeRelation) ((pokeType . species) def))))) * 2)))
-             * (max 1 (fromIntegral (length (filter (moveType move == ) (concat (map ((\(_,y,_) -> y) . moveTypeRelation) ((pokeType . species) def))))) / 2))
-             * (if elem (moveType move) (concat (map ((\(_,_,z) -> z) . moveTypeRelation) ((pokeType . species) def))) then 0 else 1)
+    fI       = fromIntegral
+    x /. y   = fromIntegral x / fromIntegral y
+    relation = moveTypeRelation . moveType $ move
+    defType  = pokeType . species $ def
+    modifier = (if elem (moveType move) $ (pokeType . species) atk then 1.5 else 1) -- STAB
+             * fI (max 1 $ (2 * (length $ intersect ((\ (x,_,_) -> x) relation) defType)))
+             * (1 / fI (max 1 $ (2 * (length $ intersect ((\ (_,y,_) -> y) relation) defType))))
+             * (if null $ intersect ((\ (_,_,z) -> z) relation) defType then 1 else 0)
 
+perfIV = Stats {hp = 31, attack = 31, defense = 31, spAttack = 31, spDefense = 31, speed = 31}
+perfEV = Stats {hp = 255, attack = 255, defense = 255, spAttack = 255, spDefense = 255, speed = 255}
+rockThrow = Move {moveName = "Rock Throw", moveType = Rock, physical = True, pp = 20, power = 50}
 
+statK = Stats {hp = 60, attack = 115, defense = 105, spAttack = 65, spDefense = 70, speed = 80}
+specK = Species { base = statK, preEvolution = Just (140, "nivel X"), no = 141, pokeType = [Rock, Water], name = "Kabutops", evolutions = []}
 
+movesK = [(rockThrow, 15)]
+monstK = Monster {nickname = "KABI", species = specK, lvl = 60, presHP = 60, moves = movesK, iv = perfIV, ev = perfEV}
 
+statC = Stats {hp = 78, attack = 84, defense = 78, spAttack = 109, spDefense = 85, speed = 100}
+specC = Species { base = statC, preEvolution = Just (5, "nivel 36"), no = 6, pokeType = [Flying, Fire], name = "Charizard", evolutions = []}
+
+movesC = []
+monstC = Monster {nickname = "CHARI", species = specC, lvl = 70, presHP = 78, moves = movesC, iv = perfIV, ev perfEV }
