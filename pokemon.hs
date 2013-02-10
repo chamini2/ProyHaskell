@@ -40,12 +40,9 @@ data Stats = Stats { hp        :: Int
 data Species = Species { no           :: Int
                        , name         :: String
                        , pokeType     :: [Type]
-                     --, pokeType     :: Either (Type, Type) Type
                        , base         :: Stats
-                       , preEvolution :: Maybe Species
-                     --, preEvolution :: Maybe Int
-                       , evolution    :: [Species]
-                     --, evolution    :: [Int]
+                       , preEvolution :: Maybe Int
+                       , evolution    :: [Int]
                        } deriving (Show)
 
 {- 
@@ -61,7 +58,7 @@ data Move = Move { moveName :: String
 {-
  - Para llevar cuantos PP le quedan a esta movida para este Monstruo
  -}
-type MonsterMove = (Move, Int)--PREGUNTAR A BETO
+type MonsterMove = (Move, Int)
 
 {- 
  - Definicion de Monster, un Monstruo especifico de cierta Especie
@@ -71,7 +68,6 @@ data Monster = Monster { species  :: Species
                        , lvl      :: Int
                        , presHP   :: Int
                        , moves    :: [MonsterMove]
-                     --, moves    :: [(Move, Int)]  -- Ataque del Monstruo, con su PP actual
                        , iv       :: Stats
                        , ev       :: Stats
                        } deriving (Show)
@@ -80,8 +76,8 @@ data Monster = Monster { species  :: Species
 -- cuales tipos son resistentes y cuales son inmunes.
 moveTypeRelation :: Type      -- Type de ataque a determinar la relación.
                  -> ( [Type]  -- Type al que es super efectivo (2x dano). (| Type es super efectivo a [Type])
-                    , [Type]  -- Type que lo resisten (0.5x dano).       (| Type ataca con resistencia a [Type])
-                    , [Type]  -- Type inmunes a el (0x dano).            (| Type no le hace dano a Pokemones de [Type])
+                    , [Type]  -- Type que lo resisten (0.5x dano).        (| Type ataca con resistencia a [Type])
+                    , [Type]  -- Type inmunes a el (0x dano).             (| Type no le hace dano a Pokemones de [Type])
                     )
 moveTypeRelation x
                  | Bug      <- x = ([Grass, Psychic, Dark], [Fighting, Flying, Poison, Ghost, Steel, Fire], [])
@@ -135,3 +131,7 @@ damage move atk def = round $ fromIntegral ((div (2 * lvl atk + 10) {-/.-} 250) 
              * (fromIntegral ( max 1 ((length (filter (moveType move == ) (concat (map ((\(x,_,_) -> x) . moveTypeRelation) ((pokeType . species) def))))) * 2)))
              * (max 1 (fromIntegral (length (filter (moveType move == ) (concat (map ((\(_,y,_) -> y) . moveTypeRelation) ((pokeType . species) def))))) / 2))
              * (if elem (moveType move) (concat (map ((\(_,_,z) -> z) . moveTypeRelation) ((pokeType . species) def))) then 0 else 1)
+
+
+
+
