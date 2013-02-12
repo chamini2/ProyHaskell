@@ -1,8 +1,10 @@
-module Pokemon (Type, Stats, Evolution, Species, Monster, Move, MonsterMove) where
---No importamos las funciones
+module Pokemon where
+--No exportamos las funciones
 import Data.List
-import Data.List.Split
---splitOn
+
+type Trainer = ( Int        --Entero que indica cual posicion de la lista de Pokemones es el actual
+               , [Monster]  --Lista de Pokemones de un entrenador
+               )
 
 {- 
  - Definicion de Type, los posibles Tipos para un Monstruo o Ataque
@@ -30,13 +32,14 @@ data Type
 {- 
  - Definicion de Stats, todas las estadisticas de un Pokemon
  -}
-data Stats = Stats { hp        :: Int
-                   , attack    :: Int
-                   , defense   :: Int
-                   , spAttack  :: Int
-                   , spDefense :: Int
-                   , speed     :: Int
-                   } deriving (Show)
+data Stats = Stats 
+              { hp        :: Int
+              , attack    :: Int
+              , defense   :: Int
+              , spAttack  :: Int
+              , spDefense :: Int
+              , speed     :: Int
+              } deriving (Show)
 
 {-
  - Tipo para definir lo relevante a una evolucion
@@ -48,40 +51,52 @@ type Evolution = (Int        --Indicador de numero en Pokedex
 {- 
  - Definicion de Species, los datos relevantes para una Especie
  -}
-data Species = Species { no           :: Int
-                       , name         :: String
-                       , pokeType     :: [Type]
-                       , base         :: Stats
-                       , preEvolution :: Maybe Evolution
-                       , evolutions   :: [Evolution]
-                       } deriving (Show)
+data Species = Species 
+                { no           :: Int
+                , name         :: String
+                , pokeType     :: [Type]
+                , base         :: Stats
+                , preEvolution :: Maybe Evolution
+                , evolutions   :: [Evolution]
+                } deriving (Show)
 
 {- 
  - Definicion de Move, los datos de un Ataque
  -}
-data Move = Move { moveName :: String
-                 , moveType :: Type
-                 , physical :: Bool
-                 , pp       :: Int
-                 , power    :: Int
-                 } deriving (Show)
+data Move = Move 
+              { moveName :: String
+              , moveType :: Type
+              , physical :: Bool
+              , pp       :: Int
+              , power    :: Int
+              } deriving (Show)
+
+--instance Show (Move) where
+--  show (Move moveName moveType physical pp power) = 
+--    "Move: " ++ show moveName ++ "\nType: " ++ show moveType 
+--    ++ (if physical then "\nPhysical" else "\nSpecial") ++
+--    "\nPP: " ++ show pp ++ "\nPower: " ++ show power
 
 {-
  - Para llevar cuantos PP le quedan a esta movida para este Monstruo
  -}
-type MonsterMove = (Move, Int)
+type MonsterMove = ( Move     --Ataque del Monstruo
+                   , Int      --PP restantes para este Ataque de este Monstruo
+                   )
 
 {- 
  - Definicion de Monster, un Monstruo especifico de cierta Especie
  -}
-data Monster = Monster { species  :: Species
-                       , nickname :: String
-                       , lvl      :: Int
-                       , presHP   :: Int
-                       , moves    :: [MonsterMove]
-                       , iv       :: Stats
-                       , ev       :: Stats
-                       } deriving (Show)
+data Monster = Monster 
+                { species  :: Species
+                , nickname :: String
+                , lvl      :: Int
+                , presHP   :: Int
+                , moves    :: [MonsterMove]
+                , stats    :: Stats
+                , iv       :: Stats
+                , ev       :: Stats
+                } deriving (Show)
 
 -- Determina, para un Type de ataque, cuales tipos son super efectivos,
 -- cuales tipos son resistentes y cuales son inmunes.
@@ -125,10 +140,10 @@ stat x f = div (((f . iv) x + 2 * (f . base . species) x + div ((f . ev) x) 4) *
  - Funcion que calcula el dano de un Ataque
  -}
 damage :: Move -> Monster -> Monster -> Int
-damage move atk def = round $ ((fI (2 * (lvl atk) + 10) / 250)                                    --La parte del nivel
-                               * (fI (stat atk (if physical move then attack else spAttack)) 
-                                 / fI (stat def (if physical move then defense else spDefense)))  --La parte de las estadisticas
-                               * fI (power move) + 2) * modifier                                  --Poder del ataque y modificador
+damage move atk def = round $ ((fI (2 * (lvl atk) + 10) / 250)                             --La parte del nivel
+                        * (fI (stat atk (if physical move then attack else spAttack)) 
+                          / fI (stat def (if physical move then defense else spDefense)))  --La parte de las estadisticas
+                        * fI (power move) + 2) * modifier                                  --Poder del ataque y modificador
   where
     fI = fromIntegral
     relation = moveTypeRelation . moveType $ move
@@ -139,19 +154,21 @@ damage move atk def = round $ ((fI (2 * (lvl atk) + 10) / 250)                  
              * (if null $ intersect ((\ (_,_,z) -> z) relation) defType then 1 else 0)
 
 
-perfIV    = Stats {hp = 31, attack = 31, defense = 31, spAttack = 31, spDefense = 31, speed = 31}
-perfEV    = Stats {hp = 255, attack = 255, defense = 255, spAttack = 255, spDefense = 255, speed = 255}
-rockThrow = Move {moveName = "Rock Throw", moveType = Rock, physical = True, pp = 20, power = 50}
-absorb    = Move {moveName = "Abosobr", moveType = Grass, physical = False, pp = 20, power = 20}
+--perfIV    = Stats {hp = 31, attack = 31, defense = 31, spAttack = 31, spDefense = 31, speed = 31}
+--perfEV    = Stats {hp = 255, attack = 255, defense = 255, spAttack = 255, spDefense = 255, speed = 255}
+--rockThrow = Move {moveName = "Rock Throw", moveType = Rock, physical = True, pp = 20, power = 50}
+--absorb    = Move {moveName = "Abosobr", moveType = Grass, physical = False, pp = 20, power = 20}
 
-statK     = Stats {hp = 60, attack = 115, defense = 105, spAttack = 65, spDefense = 70, speed = 80}
-specK     = Species { base = statK, preEvolution = Just (140, "nivel X"), no = 141, pokeType = [Rock, Water], name = "Kabutops", evolutions = []}
+--statK     = Stats {hp = 60, attack = 115, defense = 105, spAttack = 65, spDefense = 70, speed = 80}
+--specK     = Species { base = statK, preEvolution = Just (140, "nivel X"),
+--                     no = 141, pokeType = [Rock, Water], name = "Kabutops", evolutions = []}
 
-movesK    = [(rockThrow, 15)]
-monstK    = Monster {nickname = "KABI", species = specK, lvl = 60, presHP = 60, moves = movesK, iv = perfIV, ev = perfEV}
+--movesK    = [(rockThrow, 15), (absorb, 15)]
+--monstK    = Monster {nickname = "KABI", species = specK, lvl = 60, presHP = 60, moves = movesK, iv = perfIV, ev = perfEV}
 
-statC     = Stats {hp = 78, attack = 84, defense = 78, spAttack = 109, spDefense = 85, speed = 100}
-specC     = Species { base = statC, preEvolution = Just (5, "nivel 36"), no = 6, pokeType = [Flying, Fire], name = "Charizard", evolutions = []}
+--statC     = Stats {hp = 78, attack = 84, defense = 78, spAttack = 109, spDefense = 85, speed = 100}
+--specC     = Species { base = statC, preEvolution = Just (5, "nivel 36"),
+--                     no = 6, pokeType = [Flying, Fire], name = "Charizard", evolutions = []}
 
-movesC    = []
-monstC    = Monster {nickname = "CHARI", species = specC, lvl = 70, presHP = 78, moves = movesC, iv = perfIV, ev = perfEV }
+--movesC    = []
+--monstC    = Monster {nickname = "CHARI", species = specC, lvl = 70, presHP = 78, moves = movesC, iv = perfIV, ev = perfEV }
