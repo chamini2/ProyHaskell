@@ -4,4 +4,4 @@ pokesim: pokesim.hs pokemon.hs
 	ghc pokesim.hs
 
 clean:
-	-rm pokesim *.o *.hi
+	-rm pokesim hash pok *.o *.hi

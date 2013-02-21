@@ -1,0 +1,251 @@
+1,bulbasaur,Grass,Poison,45,49,49,65,65,45,,
+2,ivysaur,Grass,Poison,60,62,63,80,80,60,1,Como evoluciona
+3,venusaur,Grass,Poison,80,82,83,100,100,80,2,Como evoluciona
+4,charmander,Fire,,39,52,43,60,50,65,,
+5,charmeleon,Fire,,58,64,58,80,65,80,4,Como evoluciona
+6,charizard,Fire,Flying,78,84,78,109,85,100,5,Como evoluciona
+7,squirtle,Water,,44,48,65,50,64,43,,
+8,wartortle,Water,,59,63,80,65,80,58,7,Como evoluciona
+9,blastoise,Water,,79,83,100,85,105,78,8,Como evoluciona
+10,caterpie,Bug,,45,30,35,20,20,45,,
+11,metapod,Bug,,50,20,55,25,25,30,10,Como evoluciona
+12,butterfree,Bug,Flying,60,45,50,80,80,70,11,Como evoluciona
+13,weedle,Bug,Poison,40,35,30,20,20,50,,
+14,kakuna,Bug,Poison,45,25,50,25,25,35,13,Como evoluciona
+15,beedrill,Bug,Poison,65,80,40,45,80,75,14,Como evoluciona
+16,pidgey,Normal,Flying,40,45,40,35,35,56,,
+17,pidgeotto,Normal,Flying,63,60,55,50,50,71,16,Como evoluciona
+18,pidgeot,Normal,Flying,83,80,75,70,70,91,17,Como evoluciona
+19,rattata,Normal,,30,56,35,25,35,72,,
+20,raticate,Normal,,55,81,60,50,70,97,19,Como evoluciona
+21,spearow,Normal,Flying,40,60,30,31,31,70,,
+22,fearow,Normal,Flying,65,90,65,61,61,100,21,Como evoluciona
+23,ekans,Poison,,35,60,44,40,54,55,,
+24,arbok,Poison,,60,85,69,65,79,80,23,Como evoluciona
+25,pikachu,Electric,,35,55,30,50,40,90,172,Como evoluciona
+26,raichu,Electric,,60,90,55,90,80,100,25,Como evoluciona
+27,sandshrew,Ground,,50,75,85,20,30,40,,
+28,sandslash,Ground,,75,100,110,45,55,65,27,Como evoluciona
+29,nidoran-f,Poison,,55,47,52,40,40,41,,
+30,nidorina,Poison,,70,62,67,55,55,56,29,Como evoluciona
+31,nidoqueen,Poison,Ground,90,82,87,75,85,76,30,Como evoluciona
+32,nidoran-m,Poison,,46,57,40,40,40,50,,
+33,nidorino,Poison,,61,72,57,55,55,65,32,Como evoluciona
+34,nidoking,Poison,Ground,81,92,77,85,75,85,33,Como evoluciona
+35,clefairy,Normal,,70,45,48,60,65,35,173,Como evoluciona
+36,clefable,Normal,,95,70,73,85,90,60,35,Como evoluciona
+37,vulpix,Fire,,38,41,40,50,65,65,,
+38,ninetales,Fire,,73,76,75,81,100,100,37,Como evoluciona
+39,jigglypuff,Normal,,115,45,20,45,25,20,174,Como evoluciona
+40,wigglytuff,Normal,,140,70,45,75,50,45,39,Como evoluciona
+41,zubat,Poison,Flying,40,45,35,30,40,55,,
+42,golbat,Poison,Flying,75,80,70,65,75,90,41,Como evoluciona
+43,oddish,Grass,Poison,45,50,55,75,65,30,,
+44,gloom,Grass,Poison,60,65,70,85,75,40,43,Como evoluciona
+45,vileplume,Grass,Poison,75,80,85,100,90,50,44,Como evoluciona
+46,paras,Bug,Grass,35,70,55,45,55,25,,
+47,parasect,Bug,Grass,60,95,80,60,80,30,46,Como evoluciona
+48,venonat,Bug,Poison,60,55,50,40,55,45,,
+49,venomoth,Bug,Poison,70,65,60,90,75,90,48,Como evoluciona
+50,diglett,Ground,,10,55,25,35,45,95,,
+51,dugtrio,Ground,,35,80,50,50,70,120,50,Como evoluciona
+52,meowth,Normal,,40,45,35,40,40,90,,
+53,persian,Normal,,65,70,60,65,65,115,52,Como evoluciona
+54,psyduck,Water,,50,52,48,65,50,55,,
+55,golduck,Water,,80,82,78,95,80,85,54,Como evoluciona
+56,mankey,Fighting,,40,80,35,35,45,70,,
+57,primeape,Fighting,,65,105,60,60,70,95,56,Como evoluciona
+58,growlithe,Fire,,55,70,45,70,50,60,,
+59,arcanine,Fire,,90,110,80,100,80,95,58,Como evoluciona
+60,poliwag,Water,,40,50,40,40,40,90,,
+61,poliwhirl,Water,,65,65,65,50,50,90,60,Como evoluciona
+62,poliwrath,Water,Fighting,90,85,95,70,90,70,61,Como evoluciona
+63,abra,Psychic,,25,20,15,105,55,90,,
+64,kadabra,Psychic,,40,35,30,120,70,105,63,Como evoluciona
+65,alakazam,Psychic,,55,50,45,135,85,120,64,Como evoluciona
+66,machop,Fighting,,70,80,50,35,35,35,,
+67,machoke,Fighting,,80,100,70,50,60,45,66,Como evoluciona
+68,machamp,Fighting,,90,130,80,65,85,55,67,Como evoluciona
+69,bellsprout,Grass,Poison,50,75,35,70,30,40,,
+70,weepinbell,Grass,Poison,65,90,50,85,45,55,69,Como evoluciona
+71,victreebel,Grass,Poison,80,105,65,100,60,70,70,Como evoluciona
+72,tentacool,Water,Poison,40,40,35,50,100,70,,
+73,tentacruel,Water,Poison,80,70,65,80,120,100,72,Como evoluciona
+74,geodude,Rock,Ground,40,80,100,30,30,20,,
+75,graveler,Rock,Ground,55,95,115,45,45,35,74,Como evoluciona
+76,golem,Rock,Ground,80,110,130,55,65,45,75,Como evoluciona
+77,ponyta,Fire,,50,85,55,65,65,90,,
+78,rapidash,Fire,,65,100,70,80,80,105,77,Como evoluciona
+79,slowpoke,Water,Psychic,90,65,65,40,40,15,,
+80,slowbro,Water,Psychic,95,75,110,100,80,30,79,Como evoluciona
+81,magnemite,Electric,Steel,25,35,70,95,55,45,,
+82,magneton,Electric,Steel,50,60,95,120,70,70,81,Como evoluciona
+83,farfetchd,Normal,Flying,52,65,55,58,62,60,,
+84,doduo,Normal,Flying,35,85,45,35,35,75,,
+85,dodrio,Normal,Flying,60,110,70,60,60,100,84,Como evoluciona
+86,seel,Water,,65,45,55,45,70,45,,
+87,dewgong,Water,Ice,90,70,80,70,95,70,86,Como evoluciona
+88,grimer,Poison,,80,80,50,40,50,25,,
+89,muk,Poison,,105,105,75,65,100,50,88,Como evoluciona
+90,shellder,Water,,30,65,100,45,25,40,,
+91,cloyster,Water,Ice,50,95,180,85,45,70,90,Como evoluciona
+92,gastly,Ghost,Poison,30,35,30,100,35,80,,
+93,haunter,Ghost,Poison,45,50,45,115,55,95,92,Como evoluciona
+94,gengar,Ghost,Poison,60,65,60,130,75,110,93,Como evoluciona
+95,onix,Rock,Ground,35,45,160,30,45,70,,
+96,drowzee,Psychic,,60,48,45,43,90,42,,
+97,hypno,Psychic,,85,73,70,73,115,67,96,Como evoluciona
+98,krabby,Water,,30,105,90,25,25,50,,
+99,kingler,Water,,55,130,115,50,50,75,98,Como evoluciona
+100,voltorb,Electric,,40,30,50,55,55,100,,
+101,electrode,Electric,,60,50,70,80,80,140,100,Como evoluciona
+102,exeggcute,Grass,Psychic,60,40,80,60,45,40,,
+103,exeggutor,Grass,Psychic,95,95,85,125,65,55,102,Como evoluciona
+104,cubone,Ground,,50,50,95,40,50,35,,
+105,marowak,Ground,,60,80,110,50,80,45,104,Como evoluciona
+106,hitmonlee,Fighting,,50,120,53,35,110,87,236,Como evoluciona
+107,hitmonchan,Fighting,,50,105,79,35,110,76,236,Como evoluciona
+108,lickitung,Normal,,90,55,75,60,75,30,,
+109,koffing,Poison,,40,65,95,60,45,35,,
+110,weezing,Poison,,65,90,120,85,70,60,109,Como evoluciona
+111,rhyhorn,Ground,Rock,80,85,95,30,30,25,,
+112,rhydon,Ground,Rock,105,130,120,45,45,40,111,Como evoluciona
+113,chansey,Normal,,250,5,5,35,105,50,440,Como evoluciona
+114,tangela,Grass,,65,55,115,100,40,60,,
+115,kangaskhan,Normal,,105,95,80,40,80,90,,
+116,horsea,Water,,30,40,70,70,25,60,,
+117,seadra,Water,,55,65,95,95,45,85,116,Como evoluciona
+118,goldeen,Water,,45,67,60,35,50,63,,
+119,seaking,Water,,80,92,65,65,80,68,118,Como evoluciona
+120,staryu,Water,,30,45,55,70,55,85,,
+121,starmie,Water,Psychic,60,75,85,100,85,115,120,Como evoluciona
+122,mr-mime,Psychic,,40,45,65,100,120,90,439,Como evoluciona
+123,scyther,Bug,Flying,70,110,80,55,80,105,,
+124,jynx,Ice,Psychic,65,50,35,115,95,95,238,Como evoluciona
+125,electabuzz,Electric,,65,83,57,95,85,105,239,Como evoluciona
+126,magmar,Fire,,65,95,57,100,85,93,240,Como evoluciona
+127,pinsir,Bug,,65,125,100,55,70,85,,
+128,tauros,Normal,,75,100,95,40,70,110,,
+129,magikarp,Water,,20,10,55,15,20,80,,
+130,gyarados,Water,Flying,95,125,79,60,100,81,129,Como evoluciona
+131,lapras,Water,Ice,130,85,80,85,95,60,,
+132,ditto,Normal,,48,48,48,48,48,48,,
+133,eevee,Normal,,55,55,50,45,65,55,,
+134,vaporeon,Water,,130,65,60,110,95,65,133,Como evoluciona
+135,jolteon,Electric,,65,65,60,110,95,130,133,Como evoluciona
+136,flareon,Fire,,65,130,60,95,110,65,133,Como evoluciona
+137,porygon,Normal,,65,60,70,85,75,40,,
+138,omanyte,Rock,Water,35,40,100,90,55,35,,
+139,omastar,Rock,Water,70,60,125,115,70,55,138,Como evoluciona
+140,kabuto,Rock,Water,30,80,90,55,45,55,,
+141,kabutops,Rock,Water,60,115,105,65,70,80,140,Como evoluciona
+142,aerodactyl,Rock,Flying,80,105,65,60,75,130,,
+143,snorlax,Normal,,160,110,65,65,110,30,,
+144,articuno,Ice,Flying,90,85,100,95,125,85,,
+145,zapdos,Electric,Flying,90,90,85,125,90,100,,
+146,moltres,Fire,Flying,90,100,90,125,85,90,,
+147,dratini,Dragon,,41,64,45,50,50,50,,
+148,dragonair,Dragon,,61,84,65,70,70,70,147,Como evoluciona
+149,dragonite,Dragon,Flying,91,134,95,100,100,80,148,Como evoluciona
+150,mewtwo,Psychic,,106,110,90,154,90,130,,
+151,mew,Psychic,,100,100,100,100,100,100,,
+152,chikorita,Grass,,45,49,65,49,65,45,,
+153,bayleef,Grass,,60,62,80,63,80,60,152,Como evoluciona
+154,meganium,Grass,,80,82,100,83,100,80,153,Como evoluciona
+155,cyndaquil,Fire,,39,52,43,60,50,65,,
+156,quilava,Fire,,58,64,58,80,65,80,155,Como evoluciona
+157,typhlosion,Fire,,78,84,78,109,85,100,156,Como evoluciona
+158,totodile,Water,,50,65,64,44,48,43,,
+159,croconaw,Water,,65,80,80,59,63,58,158,Como evoluciona
+160,feraligatr,Water,,85,105,100,79,83,78,159,Como evoluciona
+161,sentret,Normal,,35,46,34,35,45,20,,
+162,furret,Normal,,85,76,64,45,55,90,161,Como evoluciona
+163,hoothoot,Normal,Flying,60,30,30,36,56,50,,
+164,noctowl,Normal,Flying,100,50,50,76,96,70,163,Como evoluciona
+165,ledyba,Bug,Flying,40,20,30,40,80,55,,
+166,ledian,Bug,Flying,55,35,50,55,110,85,165,Como evoluciona
+167,spinarak,Bug,Poison,40,60,40,40,40,30,,
+168,ariados,Bug,Poison,70,90,70,60,60,40,167,Como evoluciona
+169,crobat,Poison,Flying,85,90,80,70,80,130,42,Como evoluciona
+170,chinchou,Water,Electric,75,38,38,56,56,67,,
+171,lanturn,Water,Electric,125,58,58,76,76,67,170,Como evoluciona
+172,pichu,Electric,,20,40,15,35,35,60,,
+173,cleffa,Normal,,50,25,28,45,55,15,,
+174,igglybuff,Normal,,90,30,15,40,20,15,,
+175,togepi,Normal,,35,20,65,40,65,20,,
+176,togetic,Normal,Flying,55,40,85,80,105,40,175,Como evoluciona
+177,natu,Psychic,Flying,40,50,45,70,45,70,,
+178,xatu,Psychic,Flying,65,75,70,95,70,95,177,Como evoluciona
+179,mareep,Electric,,55,40,40,65,45,35,,
+180,flaaffy,Electric,,70,55,55,80,60,45,179,Como evoluciona
+181,ampharos,Electric,,90,75,75,115,90,55,180,Como evoluciona
+182,bellossom,Grass,,75,80,85,90,100,50,44,Como evoluciona
+183,marill,Water,,70,20,50,20,50,40,298,Como evoluciona
+184,azumarill,Water,,100,50,80,50,80,50,183,Como evoluciona
+185,sudowoodo,Rock,,70,100,115,30,65,30,,
+186,politoed,Water,,90,75,75,90,100,70,61,Como evoluciona
+187,hoppip,Grass,Flying,35,35,40,35,55,50,,
+188,skiploom,Grass,Flying,55,45,50,45,65,80,187,Como evoluciona
+189,jumpluff,Grass,Flying,75,55,70,55,85,110,188,Como evoluciona
+190,aipom,Normal,,55,70,55,40,55,85,,
+191,sunkern,Grass,,30,30,30,30,30,30,,
+192,sunflora,Grass,,75,75,55,105,85,30,191,Como evoluciona
+193,yanma,Bug,Flying,65,65,45,75,45,95,,
+194,wooper,Water,Ground,55,45,45,25,25,15,,
+195,quagsire,Water,Ground,95,85,85,65,65,35,194,Como evoluciona
+196,espeon,Psychic,,65,65,60,130,95,110,133,Como evoluciona
+197,umbreon,Dark,,95,65,110,60,130,65,133,Como evoluciona
+198,murkrow,Dark,Flying,60,85,42,85,42,91,,
+199,slowking,Water,Psychic,95,75,80,100,110,30,79,Como evoluciona
+200,misdreavus,Ghost,,60,60,60,85,85,85,,
+201,unown,Psychic,,48,72,48,72,48,48,,
+202,wobbuffet,Psychic,,190,33,58,33,58,33,360,Como evoluciona
+203,girafarig,Normal,Psychic,70,80,65,90,65,85,,
+204,pineco,Bug,,50,65,90,35,35,15,,
+205,forretress,Bug,Steel,75,90,140,60,60,40,204,Como evoluciona
+206,dunsparce,Normal,,100,70,70,65,65,45,,
+207,gligar,Ground,Flying,65,75,105,35,65,85,,
+208,steelix,Steel,Ground,75,85,200,55,65,30,95,Como evoluciona
+209,snubbull,Normal,,60,80,50,40,40,30,,
+210,granbull,Normal,,90,120,75,60,60,45,209,Como evoluciona
+211,qwilfish,Water,Poison,65,95,75,55,55,85,,
+212,scizor,Bug,Steel,70,130,100,55,80,65,123,Como evoluciona
+213,shuckle,Bug,Rock,20,10,230,10,230,5,,
+214,heracross,Bug,Fighting,80,125,75,40,95,85,,
+215,sneasel,Dark,Ice,55,95,55,35,75,115,,
+216,teddiursa,Normal,,60,80,50,50,50,40,,
+217,ursaring,Normal,,90,130,75,75,75,55,216,Como evoluciona
+218,slugma,Fire,,40,40,40,70,40,20,,
+219,magcargo,Fire,Rock,50,50,120,80,80,30,218,Como evoluciona
+220,swinub,Ice,Ground,50,50,40,30,30,50,,
+221,piloswine,Ice,Ground,100,100,80,60,60,50,220,Como evoluciona
+222,corsola,Water,Rock,55,55,85,65,85,35,,
+223,remoraid,Water,,35,65,35,65,35,65,,
+224,octillery,Water,,75,105,75,105,75,45,223,Como evoluciona
+225,delibird,Ice,Flying,45,55,45,65,45,75,,
+226,mantine,Water,Flying,65,40,70,80,140,70,,
+227,skarmory,Steel,Flying,65,80,140,40,70,70,,
+228,houndour,Dark,Fire,45,60,30,80,50,65,,
+229,houndoom,Dark,Fire,75,90,50,110,80,95,228,Como evoluciona
+230,kingdra,Water,Dragon,75,95,95,95,95,85,117,Como evoluciona
+231,phanpy,Ground,,90,60,60,40,40,40,,
+232,donphan,Ground,,90,120,120,60,60,50,231,Como evoluciona
+233,porygon2,Normal,,85,80,90,105,95,60,137,Como evoluciona
+234,stantler,Normal,,73,95,62,85,65,85,,
+235,smeargle,Normal,,55,20,35,20,45,75,,
+236,tyrogue,Fighting,,35,35,35,35,35,35,,
+237,hitmontop,Fighting,,50,95,95,35,110,70,236,Como evoluciona
+238,smoochum,Ice,Psychic,45,30,15,85,65,65,,
+239,elekid,Electric,,45,63,37,65,55,95,,
+240,magby,Fire,,45,75,37,70,55,83,,
+241,miltank,Normal,,95,80,105,40,70,100,,
+242,blissey,Normal,,255,10,10,75,135,55,113,Como evoluciona
+243,raikou,Electric,,90,85,75,115,100,115,,
+244,entei,Fire,,115,115,85,90,75,100,,
+245,suicune,Water,,100,75,115,90,115,85,,
+246,larvitar,Rock,Ground,50,64,50,45,50,41,,
+247,pupitar,Rock,Ground,70,84,70,65,70,51,246,Como evoluciona
+248,tyranitar,Rock,Dark,100,134,110,95,100,61,247,Como evoluciona
+249,lugia,Psychic,Flying,106,90,130,90,154,110,,
+250,ho-oh,Fire,Flying,106,130,90,110,154,90,,
+251,celebi,Psychic,Grass,100,100,100,100,100,100,,

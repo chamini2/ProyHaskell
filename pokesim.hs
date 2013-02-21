@@ -3,7 +3,7 @@ import qualified Data.ByteString as Str
 import Data.List.Split (splitOn)
 import System.IO
 import System.Environment
-import Pokemon
+import New
 
 
 main = do
@@ -34,13 +34,13 @@ main = do
           putStrLn $ "\nMOVES\n" ++ movesFile ++ "\n"
           print moves
           putStrLn $ "\nTRAINER 1\n" ++ train1File ++ "\n"
-          --print trainer1
+          print trainer1
           putStrLn $ "\nTRAINER 2\n" ++ train2File ++ "\n"
           print trainer2
           putStrLn "Ataque"
           ataque <- getLine
           let ataque = "tackle"
-          print $ damage ((filter (\m -> moveName m == ataque) moves) !! 0) ((snd trainer1) !! 0) ((snd trainer2) !! 0)
+          print $ damage ((filter (\m -> moveName m == ataque) moves) !! 0) ((snd trainer1) !! 2) ((snd trainer2) !! 0)
 
 
 speciesParse :: [String] -> [Species]
@@ -77,7 +77,7 @@ movesParse = map (\p -> moves $ splitOn "," p)
 trainerParse :: [String] -> [Species] -> [Move] -> Trainer
 trainerParse x specs moves =  (0, map (\p -> monster $ splitOn "," p) x)
   where
-    monster p = 
+    monster [spec, nick, level, atk1, atk2, atk3, atk4] = 
       mons { presHP = maxHP mons
            , stats  = Stats { hp        = maxHP mons
                             , attack    = stat mons attack
@@ -90,16 +90,16 @@ trainerParse x specs moves =  (0, map (\p -> monster $ splitOn "," p) x)
       where
         mons = 
           Monster { species  = pokeSpecies
-                  , nickname = p !! 1
-                  , lvl      = read (p !! 2) :: Int
+                  , nickname = nick
+                  , lvl      = read level :: Int
                   , presHP   = 0 
-                  , moves    = getMoves $ filter ("" /=) [p !! 3, p !! 4, p !! 5, p !! 6]
+                  , moves    = getMoves $ filter ("" /=) [atk1, atk2, atk3, atk4]
                   , stats    = base pokeSpecies
                   , iv       = perfIV
                   , ev       = perfEV
                   }
           where
-            pokeSpecies = (filter (\s -> no s == (read (p !! 0) :: Int)) specs) !! 0
+            pokeSpecies = (filter (\s -> no s == (read (spec) :: Int)) specs) !! 0
             getMoves = map (\n -> (move n, pp $ move n))
               where
                 move n = ((filter (\m -> moveName m == n) moves) !! 0)
