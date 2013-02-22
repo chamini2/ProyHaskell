@@ -35,39 +35,62 @@ speciesParse :: [[String]] -> IMap.IntMap Species
 speciesParse list = 
   IMap.fromList $ map (\x -> (no x,x)) $ map getEvolutions $ listSpecies
   where
-    listSpecies = map species list
+    listSpecies = map getPreEvolutions $ map species list
+    species :: [String] 
+            -> ( Species  -- Species nueva, sin informacion de evoluciones
+               , String   -- Informacion de preEvolution
+               , String   -- Criterio de evolucion para la preEvolucion
+               )
     species [sNo, sName, sPT1, sPT2, sHP, sAtk, sDef, sSpAtk, sSpDef, sSpd, sPreE, sCr] =
-      Species 
-        { no       = read sNo :: Int
-        , name     = sName
-        , pokeType = (read sPT1 :: Type) 
-            : (if sPT2 /= "" then (read sPT2 :: Type) : [] else [])
-        , base     = 
-            Stats 
-              { hp        = read sHP    :: Int
-              , attack    = read sAtk   :: Int
-              , defense   = read sDef   :: Int
-              , spAttack  = read sSpAtk :: Int
-              , spDefense = read sSpDef :: Int
-              , speed     = read sSpd   :: Int
-              }
-        , preEvolution = 
-            if sPreE /= "" 
-            then Just Evolution { eNo = read sPreE :: Int, criterio = sCr } 
+      ( Species 
+          { no       = read sNo :: Int
+          , name     = sName
+          , pokeType = (read sPT1 :: Type) 
+              : (if sPT2 /= "" then (read sPT2 :: Type) : [] else [])
+          , base     = 
+              Stats 
+                { hp        = read sHP    :: Int
+                , attack    = read sAtk   :: Int
+                , defense   = read sDef   :: Int
+                , spAttack  = read sSpAtk :: Int
+                , spDefense = read sSpDef :: Int
+                , speed     = read sSpd   :: Int
+                }
+          --, preEvolution = 
+          --    if sPreE /= "" 
+          --    then Just Evolution { eNo = read sPreE :: Int, criterio = sCr } 
+          --    else Nothing
+          , preEvolution = Nothing
+          , evolutions   = []
+          }
+      , sPreE
+      , sCr
+      )
+    getPreEvolutions :: (Species, String, String) -> Species
+    getPreEvolutions (spec, sPreE, sCr) = 
+      spec 
+        { preEvolution = 
+            if sPreE /= ""
+            then Just Evolution { eNo = specPreE, criterio = sCr }
             else Nothing
-        , evolutions   = []
         }
+      where
+      specPreE = 
+        fromJust $ find (((read sPreE :: Int)==).no) 
+          $ map first $ map species list
     -- Para hacer la lista de Evolution para cada Species
     getEvolutions :: Species -> Species
-    getEvolutions x = 
-      x { evolutions = 
+    getEvolutions spec = 
+      spec 
+        { evolutions = 
             let 
               pre = fromJust.preEvolution
             in 
-              map (\y -> Evolution { eNo = no y, criterio = criterio $ pre y }) 
-                $ filter ((no x==).eNo.pre) 
+              map (\y -> Evolution { eNo = y, criterio = criterio.pre $ y }) 
+                $ filter (\x -> (==) (no spec) $ no.eNo.pre $ x) 
                   $ filter (isJust.preEvolution) listSpecies
         }
+    first (x,_,_) = x
 
 -- Por cada linea del archivo se crea un Move
 movesParse :: [[String]] -> Map.Map String Move
@@ -83,7 +106,7 @@ movesParse x = Map.fromList $ map (\x -> (moveName x, x)) $ map moves x
 
 -- Crea un Trainer con los Monster indicados en el archivo
 trainerParse :: [[String]] -> IMap.IntMap Species -> Map.Map String Move -> Trainer
-trainerParse list specs moves = Trainer { active = 0, pokeballs = map monster list }
+trainerParse list specs moves = Trainer { active = 1, pokeballs = zip [1..] $ map monster list }
   where
   monster [pSpec, pNick, pLVL, pAtk1, pAtk2, pAtk3, pAtk4] = 
     mons { presHP = maxHP mons
@@ -111,8 +134,8 @@ trainerParse list specs moves = Trainer { active = 0, pokeballs = map monster li
         }
       where
       pokeSpecies = fromJust $ IMap.lookup (read pSpec :: Int) specs
-      getMoves = map (\nom -> MonsterMove { monMove = move nom, monPP = pp $ move nom })
+      getMoves l = zip [1..] $ map (\nam -> MonsterMove { monMove = move nam, monPP = pp $ move nam }) l
         where
-        move nom = fromJust $ Map.lookup nom moves
+        move nam = fromJust $ Map.lookup nam moves
       perfIV = Stats 31 31 31 31 31 31 
       perfEV = Stats 255 255 255 255 255 255

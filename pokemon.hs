@@ -16,13 +16,16 @@ module Pokemon
   , Species(..)
   , Move(..)
   , Monster(..)
+  , activeStatus
   , MonsterMove(..)
   , Trainer(..)
+  , TrainerMonster
   , maxHP
   , stat
   , damage
   ) where
 
+import Data.Maybe (isJust, fromJust)
 import Data.List (intersect)
 
 -- Posibles tipos para un Monster o Move
@@ -68,7 +71,7 @@ instance Show (Stats) where
 -- Evolucion de un Pokemon a otro Pokemon
 data Evolution = 
   Evolution
-    { eNo      :: Int      -- Indicador de numero en Pokedex
+    { eNo      :: Species  -- Indicador de numero en Pokedex
     , criterio :: String   -- Criterio de evolucion
     } 
   deriving (Eq, Read, Show)
@@ -86,13 +89,19 @@ data Species =
   deriving (Eq, Read)
 
 instance Show (Species) where
-  show (Species no name pokeType base preEvolution evolutions) = 
-    "PokeDex    " ++ show no ++ "\nName       " ++ name ++ "\nType       "
-    ++ show pokeType ++ "\nBase\n" ++ show base ++ "\nEvolutions\n"
-    ++ (foldr format "" $ map tupleFormat $ evolutions) ++ "\n"
+  show (Species num sName pokeType base preEvolution evolutions) = 
+    "PokeDex " ++ show num ++ "\nName    " ++ sName ++ "\nType    "
+    ++ show pokeType ++ "\nBase\n" ++ show base 
+    ++ (if isJust preEvolution 
+        then "\nPreEvolution\n" ++ (flip format "" $ tupleFormat.fromJust $ preEvolution) 
+        else "")
+    ++ (if not.null $ evolutions 
+        then "\nEvolutions\n" ++ (foldr format "" $ map tupleFormat $ evolutions) ++ "\n"
+        else "")
     where
-    format (no, cr) y = "\t" ++ (show no) ++ " - " ++ cr ++ "\n" ++ y
-    tupleFormat x     = (eNo x, criterio x)
+    format (num, nam, cr) y = "\t" ++ (show num) ++ " - " ++ nam ++ " - " ++ cr ++ "\n" ++ y
+    tupleFormat :: Evolution -> (Int, String, String)
+    tupleFormat x     = (no.eNo $ x, name.eNo $ x, criterio x)
 
 -- Representa un ataque
 data Move = 
@@ -123,7 +132,7 @@ data Monster =
     , nickname :: String
     , lvl      :: Int
     , presHP   :: Int
-    , moves    :: [MonsterMove]
+    , moves    :: [(Int, MonsterMove)]
     , stats    :: Stats
     , iv       :: Stats
     , ev       :: Stats
@@ -132,16 +141,25 @@ data Monster =
 
 instance Show (Monster) where
   show (Monster species nickname lvl presHP moves stats iv ev) = 
-    nickname ++ "\n" ++ (foldr format "" $ zip [1..] $ map tupleFormat $ moves)
+    nickname ++ "\nMove(s)\n" ++ (foldr format "" $ zip [1..] $ map tupleFormat $ moves)
     where
     format (x, (mov, pp)) y = "\t" ++ show x ++ " -> " ++ mov ++ " " ++ (show pp) ++ "PP\n" ++ y
-    tupleFormat x           = (moveName.monMove $ x, monPP x)
+    tupleFormat x           = (moveName.monMove.snd $ x, monPP.snd $ x)
+
+-- Formato de impresion del estado de un Monster
+activeStatus :: Monster -> String
+activeStatus mon = nickname mon ++ " | LVL" ++ (show.lvl $ mon) ++ " | "
+                   ++ (show.presHP $ mon) ++ "/" ++ (show.hp.stats $ mon) ++ "HP"
+
+
+-- Para indicar en que pokebola esta el Monster
+type TrainerMonster = (Int,Monster)
 
 -- Lista de Pokemones de un entrenador y un indicador de cual esta en uso ahora
 data Trainer = 
   Trainer 
     { active     :: Int         -- Entero que indica cual posicion de la lista de Pokemones es el actual
-    , pokeballs  :: [Monster]   -- Lista de Pokemones de un entrenador
+    , pokeballs  :: [TrainerMonster]   -- Lista de Pokemones de un entrenador
     } 
   deriving (Eq, Read, Show)
 
@@ -206,11 +224,14 @@ damage mov atk def = floor $ (*) modifier $ ((2 * aLVL + 10) / 250) * (aAtk / dD
     let
       stab    = if elem (moveType mov) $ pokeType.species $ atk then 1.5 else 1
       typeSE  = fromIntegral $ max 1 $ (*) 2 $ length 
-                  $ intersect ((\(x,_,_) -> x) relation) dType
+                  $ intersect (first relation) dType
       typeNVE = (/) 1 $ fromIntegral $ max 1 $ (*) 2 $ length 
-                  $ intersect ((\(_,x,_) -> x) relation) dType
-      typeI   = if null $ intersect ((\(_,_,x) -> x) relation) dType then 1 else 0
+                  $ intersect (secnd relation) dType
+      typeI   = if null $ intersect (third relation) dType then 1 else 0
     in stab * typeSE * typeNVE * typeI
       where
       relation = moveTypeRelation.moveType $ mov
       dType    = pokeType.species $ def
+      first (x,_,_) = x
+      secnd (_,y,_) = y
+      third (_,_,z) = z
