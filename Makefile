@@ -1,7 +1,7 @@
 all: clean pokesim
 
-pokesim: pokesim.hs pokemon.hs
-	ghc pokesim.hs
+pokesim: Pokesim.hs Pokemon.hs PokeParse.hs PokeBattle.hs
+	ghc Pokesim.hs
 
 clean:
-	-rm pokesim hash pok *.o *.hi
+	-rm pokesim *.o *.hi
