@@ -22,13 +22,11 @@ import Data.Maybe (isJust, fromJust)
 import qualified Data.IntMap as IMap (IntMap, fromList, lookup)
 import qualified Data.Map as Map (Map, fromList, lookup)
 
-import Data.List.Split (splitOn)
-
 import Pokemon
 
 -- Para separar el String leido del archivo en lineas, sin incluir lineas en blanco
 linesParse :: String -> [[String]]
-linesParse s = map (splitOn (",")) $ filter ("" /=) $ lines s
+linesParse s = map (splitOn (',')) $ filter ("" /=) $ lines s
 
 -- Por cada linea del archivo se crea una Species
 speciesParse :: [[String]] -> IMap.IntMap Species

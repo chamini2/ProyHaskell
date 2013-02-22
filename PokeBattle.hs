@@ -21,8 +21,6 @@ import System.Environment (getArgs)
 import Data.Maybe (fromJust)
 import Data.List (find)
 
-import Data.List.Split (splitOn)
-
 import Pokemon
 
 -- Resultados finales posibles para una batalla
@@ -157,7 +155,7 @@ chooseActive n trainer
     putStrLn $ pokeList trainer
     input <- getLine
     putStrLn "\n"
-    let comando = splitOn " " input
+    let comando = splitOn ' ' input
     if (length comando == 2)
     then
       let 
@@ -191,7 +189,7 @@ turn atk def = do
       putStrLn $ "Invalid " ++ str ++ "...\n"
       turn atk def
    in 
-    case splitOn " " input of
+    case splitOn ' ' input of
       -- Un solo elemento
       [x]       ->
         case x of

@@ -23,6 +23,7 @@ module Pokemon
   , maxHP
   , stat
   , damage
+  , splitOn         -- Para evitar usar cabal innecesariamente
   ) where
 
 import Data.Maybe (isJust, fromJust)
@@ -235,3 +236,11 @@ damage mov atk def = floor $ (*) modifier $ ((2 * aLVL + 10) / 250) * (aAtk / dD
       first (x,_,_) = x
       secnd (_,y,_) = y
       third (_,_,z) = z
+
+splitOn :: Char -> String -> [String]
+splitOn _ [] = [""]
+splitOn ele (x:xs)
+   | x == ele  = "" : rest
+   | otherwise = (x : head rest) : tail rest
+   where
+       rest = splitOn ele xs
