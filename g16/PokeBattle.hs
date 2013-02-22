@@ -208,7 +208,7 @@ turn atk def = do
               if all isDigit y && y /= ""
               then 
                 if (1 <= n) && ((<=) n $ length.moves.snd.getActive $ atk) 
-                    && ((<=) 0 $ monPP.snd.fromJust 
+                    && ((<) 0 $ monPP.snd.fromJust 
                         $ find ((n==).fst) $ moves.snd.getActive $ atk)
                 then return $ FIGHT n
                 else invalid "move"

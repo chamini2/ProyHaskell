@@ -24,9 +24,9 @@ import PokeBattle
 
 main = do
   args <- getArgs
-  putStrLn " ======================================================================================="
-  putStrLn "|| atacar = FIGHT, cambiar = PKMN, info = INFO, rendirse = RUN, yo = ME, rival = RIVAL ||"
-  putStrLn " ======================================================================================="
+  putStrLn " ====================================================================================================="
+  putStrLn "|| atacar = FIGHT, cambiar = PKMN, info = INFO, ayuda = HELP, rendirse = RUN, yo = ME, rival = RIVAL ||"
+  putStrLn " ====================================================================================================="
   putStrLn "Let's PokeBattle!\n"
   if length args /= 4 
   then putStrLn "Usage: pokemons.csv moves.csv trainer1.csv trainer2.csv"
