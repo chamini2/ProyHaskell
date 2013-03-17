@@ -9,7 +9,7 @@
  -   de la batalla así como los data utilizados.
  -}
 
-module PokeBattle 
+module PokeBattle
   ( Result(..)
   , battle
   ) where
@@ -24,17 +24,17 @@ import Data.List (find)
 import Pokemon
 
 -- Resultados finales posibles para una batalla
-data Result 
+data Result
   = Trainer1
-  | Trainer2 
-  | Draw 
+  | Trainer2
+  | Draw
   deriving (Show, Eq)
 
 -- Comandos de accion posibles a elegir por un entrenador
 data Command
-  = FIGHT Int 
-  | PKMN Int 
-  | RUN 
+  = FIGHT Int
+  | PKMN Int
+  | RUN
   deriving (Eq)
 
 -- Obtiene le Monster en uso del Trainer
@@ -52,7 +52,7 @@ defeated trainer = all fainted $ pokeballs trainer
 -- Debilita el HP del Pokemon defensor
 -- y decrementa el PP del Move usado por el Pokemon atacante
 attacks :: Int -> Trainer -> Trainer -> (Trainer,Trainer)
-attacks movN atk def = 
+attacks movN atk def =
   ( atk { pokeballs = map modifyAtk $ pokeballs atk }
   , def { pokeballs = map modifyDef $ pokeballs def }
   )
@@ -60,16 +60,16 @@ attacks movN atk def =
   modifyAtk (i, m)
     | i == iA   = (i, m { moves = map modifyMove $ moves mA })
     | otherwise = (i, m)
-  modifyMove (i, m) 
+  modifyMove (i, m)
     | i == iM   = (i, m { monPP = (monPP mov - 1) })
     | otherwise = (i, m)
   modifyDef (i, m)
-    | i == iD   = 
+    | i == iD   =
       ( i
-      , m { presHP = 
-          if dmg <= (presHP mD) 
-          then (presHP mD - dmg) 
-          else 0 
+      , m { presHP =
+          if dmg <= (presHP mD)
+          then (presHP mD - dmg)
+          else 0
         }
       )
     | otherwise = (i, m)
@@ -78,28 +78,28 @@ attacks movN atk def =
   (iD, mD)  = getActive def
   dmg       = damage (monMove mov) mA mD
 
--- Cambia el Pokemon activo del Trainer pasado, 
+-- Cambia el Pokemon activo del Trainer pasado,
 -- en caso de que el Trainer haya pedido el cambio
 pkmn :: Trainer -> Command -> Trainer
 pkmn trainer (PKMN x) = trainer { active = x }
 pkmn trainer _        = trainer
 
--- Determina que Pokemon atacara primero por su speed 
+-- Determina que Pokemon atacara primero por su speed
 -- y lleva a cabo los ataques correspondientes.
 checkSpeed :: (Trainer, Int) -> (Trainer, Int) -> (Trainer,Trainer)
 checkSpeed (left, l) (right, r)
-  | getSpeed left >= getSpeed right = 
-    let 
+  | getSpeed left >= getSpeed right =
+    let
       (nLeft, nRight) = attacks l left right
-    in 
-      if fainted $ getActive nRight 
+    in
+      if fainted $ getActive nRight
       then (nLeft, nRight)
       else swap $ attacks r nRight nLeft
   | otherwise                       =
-    let 
+    let
       (nRight, nLeft) = attacks r right left
-    in 
-      if fainted $ getActive nLeft 
+    in
+      if fainted $ getActive nLeft
       then (nLeft, nRight)
       else attacks l nLeft nRight
   where
@@ -109,15 +109,15 @@ checkSpeed (left, l) (right, r)
 pokeList :: Trainer -> String
 pokeList trainer = foldr format "" $ zip [1..] $ map tupleFormat $ pokeballs trainer
   where
-  format (x, (nam, lvl, hp, pres, faint)) y = 
-    show x ++ " -> " ++ nam ++ " LVL" ++ show lvl ++ " " ++ show hp ++ "/" 
+  format (x, (nam, lvl, hp, pres, faint)) y =
+    show x ++ " -> " ++ nam ++ " LVL" ++ show lvl ++ " " ++ show hp ++ "/"
     ++ show pres ++ "HP" ++ (if faint then " FAINTED" else "") ++ "\n" ++ y
   tupleFormat (i,m)                         =
     (nickname m, lvl m, presHP m,hp.stats $ m, fainted (i,m))
 
 -- Lleva a cabo la batalla entera, devolviendo el resultado de esta
 battle :: Trainer -> Trainer -> IO Result
-battle left right = do  
+battle left right = do
   putStrLn $ "Trainer1's\n\t" ++ (activeStatus.snd.getActive $ left)
   putStrLn $ "Trainer2's\n\t" ++ (activeStatus.snd.getActive $ right) ++ "\n"
   case (defeated left, defeated right) of
@@ -129,10 +129,10 @@ battle left right = do
       aLeft  <- chooseActive 1 left
       aRight <- chooseActive 2 right
       -- Pido un comando de accion
-      comm1  <- turn aLeft right
-      comm2  <- turn aRight left
+      comm1  <- turn aLeft aRight
+      comm2  <- turn aRight aLeft
       -- En caso de cambio de pokemon
-      let nLeft  = pkmn aLeft comm1 
+      let nLeft  = pkmn aLeft comm1
       let nRight = pkmn aRight comm2
       -- Posibles combinaciones de flujo de batalla
       case (comm1, comm2) of
@@ -144,13 +144,14 @@ battle left right = do
         (FIGHT x, PKMN y)  -> uncurry battle $ attacks x nLeft nRight
         (FIGHT x, FIGHT y) -> uncurry battle $ checkSpeed (nLeft,x) (nRight,y)
 
--- Para obligar al Trainer a elegir un Pokemon que no este debilitado 
+-- Para obligar al Trainer a elegir un Pokemon que no este debilitado
 -- a punto de demasyo, en caso de que el actualmente activo lo este
-chooseActive :: Int -> Trainer -> IO Trainer
+chooseActive :: Int       -- Solo para imprimir el numero de Trainer
+             -> Trainer -> IO Trainer
 chooseActive n trainer
   | fainted $ getActive trainer = do
     putStrLn
-      $ "Trainer" ++ show n ++ "! " ++ (nickname.snd.getActive $ trainer) 
+      $ "Trainer" ++ show n ++ "! " ++ (nickname.snd.getActive $ trainer)
       ++ " can't battle anymore!! Choose a new Pokemon to battle!"
     putStrLn $ pokeList trainer
     input <- getLine
@@ -158,16 +159,16 @@ chooseActive n trainer
     let comando = splitOn ' ' input
     if (length comando == 2)
     then
-      let 
+      let
         [com,num] = comando
       in
         if (com == "cambiar") && (all isDigit num) && num /= ""
         then do
           let newP     = read num :: Int
-          let nTrainer = trainer { active = 
-            if (1 <= newP) 
-                && ((<=) newP $ length $ pokeballs trainer) 
-            then newP 
+          let nTrainer = trainer { active =
+            if (1 <= newP)
+                && ((<=) newP $ length $ pokeballs trainer)
+            then newP
             else active trainer }
           chooseActive n nTrainer
         else chooseActive n trainer
@@ -184,11 +185,11 @@ turn atk def = do
   putStrLn "=================================\n"
   input <- getLine
   putStrLn "\n"
-  let 
-    invalid str = do 
+  let
+    invalid str = do
       putStrLn $ "Invalid " ++ str ++ "...\n"
       turn atk def
-   in 
+   in
     case splitOn ' ' input of
       -- Un solo elemento
       [x]       ->
@@ -204,27 +205,27 @@ turn atk def = do
           n = read y :: Int
         in
           case x of
-            "atacar"  -> 
+            "atacar"  ->
               if all isDigit y && y /= ""
-              then 
-                if (1 <= n) && ((<=) n $ length.moves.snd.getActive $ atk) 
-                    && ((<) 0 $ monPP.snd.fromJust 
+              then
+                if (1 <= n) && ((<=) n $ length.moves.snd.getActive $ atk)
+                    && ((<) 0 $ monPP.snd.fromJust
                         $ find ((n==).fst) $ moves.snd.getActive $ atk)
                 then return $ FIGHT n
                 else invalid "move"
               else invalid "option"
 
-            "cambiar" -> 
+            "cambiar" ->
               if all isDigit y && y /= ""
-              then 
-                if (n /= active atk) 
-                    && (1 <= n) && ((<=) n $ length.pokeballs $ atk) 
+              then
+                if (n /= active atk)
+                    && (1 <= n) && ((<=) n $ length.pokeballs $ atk)
                     && (not.fainted.fromJust $ find ((n==).fst) $ pokeballs atk)
                 then return $ PKMN n
                 else invalid "pokemon"
               else invalid "option"
 
-            "info"    -> 
+            "info"    ->
               case y of
                 "yo"      -> info atk
                 "rival"   -> info def
@@ -232,7 +233,7 @@ turn atk def = do
             otherwise -> invalid "option"
       otherwise -> invalid "option"
   where
-    info trainer = do 
+    info trainer = do
       putStrLn $ show.species.snd.getActive $ trainer
       turn atk def
     help trainer = (show.snd.getActive $ trainer) ++ "PokeParty\n" ++ pokeList atk
