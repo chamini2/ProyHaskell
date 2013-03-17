@@ -144,8 +144,8 @@ instance Show (Monster) where
   show (Monster species nickname lvl presHP moves stats iv ev) = 
     nickname ++ "\nMove(s)\n" ++ (foldr format "" $ zip [1..] $ map tupleFormat $ moves)
     where
-    format (x, (mov, pp)) y = "\t" ++ show x ++ " -> " ++ mov ++ " " ++ (show pp) ++ "PP\n" ++ y
-    tupleFormat x           = (moveName.monMove.snd $ x, monPP.snd $ x)
+    format (x, (mov, typ, pp)) y = "\t" ++ show x ++ " -> " ++ mov ++ " (" ++ (show typ) ++ ") " ++ (show pp) ++ "PP\n" ++ y
+    tupleFormat x           = (moveName.monMove.snd $ x, moveType.monMove.snd$ x, monPP.snd $ x)
 
 -- Formato de impresion del estado de un Monster
 activeStatus :: Monster -> String
