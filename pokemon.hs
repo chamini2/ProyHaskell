@@ -5,7 +5,7 @@
  -   Alberto Cols      09-10177
  -   Matteo Ferrando   09-10285
  -
- -   Se definen todas las estructuras que definen a un Pokemon, así como las 
+ -   Se definen todas las estructuras que definen a un Pokemon, así como las
  -   funciones para obtener sus Stats y de las acciones que realizan.
  -}
 
@@ -51,34 +51,34 @@ data Type
   deriving (Bounded, Eq, Enum, Read, Show)
 
 -- Estadisticas de un Pokemon
-data Stats = 
-  Stats 
+data Stats =
+  Stats
     { hp        :: Int
     , attack    :: Int
     , defense   :: Int
     , spAttack  :: Int
     , spDefense :: Int
     , speed     :: Int
-    } 
+    }
   deriving (Eq, Read)
 
 instance Show (Stats) where
-  show (Stats hp attack defense spAttack spDefense speed) = 
-    "\tHP " ++ show hp ++ "\n\tAttack  " ++ show attack 
-    ++ "\n\tDefense " ++ show defense ++ "\n\tSpAttack " 
-    ++ show spAttack  ++ "\n\tSpDefense " ++ show spDefense 
+  show (Stats hp attack defense spAttack spDefense speed) =
+    "\tHP " ++ show hp ++ "\n\tAttack  " ++ show attack
+    ++ "\n\tDefense " ++ show defense ++ "\n\tSpAttack "
+    ++ show spAttack  ++ "\n\tSpDefense " ++ show spDefense
     ++ "\n\tSpeed " ++ show speed
 
 -- Evolucion de un Pokemon a otro Pokemon
-data Evolution = 
+data Evolution =
   Evolution
     { eNo      :: Species  -- Indicador de numero en Pokedex
     , criterio :: String   -- Criterio de evolucion
-    } 
+    }
   deriving (Eq, Read, Show)
 
 -- Datos relevantes para una especie de un Pokemon
-data Species = 
+data Species =
   Species
     { no           :: Int
     , name         :: String
@@ -86,17 +86,17 @@ data Species =
     , base         :: Stats
     , preEvolution :: Maybe Evolution
     , evolutions   :: [Evolution]
-    } 
+    }
   deriving (Eq, Read)
 
 instance Show (Species) where
-  show (Species num sName pokeType base preEvolution evolutions) = 
+  show (Species num sName pokeType base preEvolution evolutions) =
     "PokeDex " ++ show num ++ "\nName    " ++ sName ++ "\nType    "
-    ++ show pokeType ++ "\nBase\n" ++ show base 
-    ++ (if isJust preEvolution 
-        then "\nPreEvolution\n" ++ (flip format "" $ tupleFormat.fromJust $ preEvolution) 
+    ++ show pokeType ++ "\nBase\n" ++ show base
+    ++ (if isJust preEvolution
+        then "\nPreEvolution\n" ++ (flip format "" $ tupleFormat.fromJust $ preEvolution)
         else "")
-    ++ (if not.null $ evolutions 
+    ++ (if not.null $ evolutions
         then "\nEvolutions\n" ++ (foldr format "" $ map tupleFormat $ evolutions) ++ "\n"
         else "")
     where
@@ -105,30 +105,30 @@ instance Show (Species) where
     tupleFormat x     = (no.eNo $ x, name.eNo $ x, criterio x)
 
 -- Representa un ataque
-data Move = 
+data Move =
   Move
     { moveName :: String
     , moveType :: Type
     , physical :: Bool
     , pp       :: Int
     , power    :: Int
-    } 
+    }
   deriving (Eq, Read, Show)
 
 -- Para asociar un ataque con un monstruo, con los PP que le quedan disponibles
-data MonsterMove = 
-  MonsterMove 
+data MonsterMove =
+  MonsterMove
     { monMove :: Move   -- Move del Monster
     , monPP   :: Int    -- PP restantes para este Move de este Monster
-    } 
+    }
   deriving (Eq, Read)
 
 instance Show (MonsterMove) where
   show (MonsterMove monMove monPP) = "\t" ++ (moveName monMove) ++ " " ++ show monPP ++ "PP\n"
 
 -- Representa un monstruo particular
-data Monster = 
-  Monster 
+data Monster =
+  Monster
     { species  :: Species
     , nickname :: String
     , lvl      :: Int
@@ -137,11 +137,11 @@ data Monster =
     , stats    :: Stats
     , iv       :: Stats
     , ev       :: Stats
-    } 
+    }
   deriving (Eq, Read)
 
 instance Show (Monster) where
-  show (Monster species nickname lvl presHP moves stats iv ev) = 
+  show (Monster species nickname lvl presHP moves stats iv ev) =
     nickname ++ "\nMove(s)\n" ++ (foldr format "" $ zip [1..] $ map tupleFormat $ moves)
     where
     format (x, (mov, typ, pp)) y = "\t" ++ show x ++ " -> " ++ mov ++ " (" ++ (show typ) ++ ") " ++ (show pp) ++ "PP\n" ++ y
@@ -157,11 +157,11 @@ activeStatus mon = nickname mon ++ " | LVL" ++ (show.lvl $ mon) ++ " | "
 type TrainerMonster = (Int,Monster)
 
 -- Lista de Pokemones de un entrenador y un indicador de cual esta en uso ahora
-data Trainer = 
-  Trainer 
+data Trainer =
+  Trainer
     { active     :: Int         -- Entero que indica cual posicion de la lista de Pokemones es el actual
     , pokeballs  :: [TrainerMonster]   -- Lista de Pokemones de un entrenador
-    } 
+    }
   deriving (Eq, Read, Show)
 
 -- Determina, para un Type de ataque, cuales tipos son super efectivos,
@@ -221,12 +221,12 @@ damage mov atk def = floor $ (*) modifier $ ((2 * aLVL + 10) / 250) * (aAtk / dD
   aAtk     = fromIntegral.(if physical mov then attack else spAttack).stats $ atk
   dDef     = fromIntegral.(if physical mov then defense else spDefense).stats $ def
   mBase    = fromIntegral.power $ mov
-  modifier = 
+  modifier =
     let
       stab    = if elem (moveType mov) $ pokeType.species $ atk then 1.5 else 1
-      typeSE  = fromIntegral $ max 1 $ (*) 2 $ length 
+      typeSE  = fromIntegral $ max 1 $ (*) 2 $ length
                   $ intersect (first relation) dType
-      typeNVE = (/) 1 $ fromIntegral $ max 1 $ (*) 2 $ length 
+      typeNVE = (/) 1 $ fromIntegral $ max 1 $ (*) 2 $ length
                   $ intersect (secnd relation) dType
       typeI   = if null $ intersect (third relation) dType then 1 else 0
     in stab * typeSE * typeNVE * typeI
